@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Game Hub | Collection of Mini Projects</title>
+    <link
+      rel="icon"
+      href="https://cdn.glitch.global/e1f58fcd-1ad1-488f-a6db-042ccb1bb005/strona%2Fchess%2Fimg%2Fchesspieces%2Fwikipedia%2Fwr.png?v=1737126246906"
+    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+      :root {
+        --primary-color: #9d4edd;
+        --secondary-color: #7b2cbf;
+        --accent-color: #c77dff;
+        --background-gradient: linear-gradient(
+          135deg,
+          #6a11cb 0%,
+          #2575fc 50%,
+          #f5576c 100%
+        );
+        --glass-bg: rgba(255, 255, 255, 0.1);
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: 'Segoe UI', system-ui, sans-serif;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background: var(--background-gradient);
+        background-attachment: fixed;
+        background-size: 400% 400%;
+        color: white;
+        overflow-x: hidden;
+        animation: gradientFlow 15s ease infinite;
+      }
+
+      .header {
+        text-align: center;
+        padding: 3rem 1rem;
+        animation: slideDown 0.8s ease-out;
+      }
+
+      .title {
+        font-size: clamp(2.5rem, 6vw, 4rem);
+        margin-bottom: 0.5rem;
+        text-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        background: linear-gradient(45deg, #fff, #e0aaff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .subtitle {
+        font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+        color: #f8f9fa;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        background: linear-gradient(45deg, #e0aaff, #c77dff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .grid-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
+        padding: 2rem;
+        width: 100%;
+        max-width: 1400px;
+        margin: auto;
+        perspective: 1000px;
+      }
+
+      .button {
+        position: relative;
+        padding: 1.5rem 2rem;
+        font-size: 1.2rem;
+        background: var(--glass-bg);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 16px;
+        color: white;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(12px);
+        opacity: 0;
+        animation: fadeInUp 0.5s ease-out forwards;
+        overflow: hidden;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        display: flex;
+        align-items: center;
+      }
+
+      .button:hover {
+        background: rgba(157, 78, 221, 0.3);
+        transform: translateY(-5px) scale(1.03);
+        box-shadow: 0 12px 30px rgba(157, 78, 221, 0.4);
+      }
+
+      .button:hover::before {
+        opacity: 1;
+      }
+
+      .button::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(
+          600px circle at var(--x) var(--y),
+          rgba(199, 125, 255, 0.4),
+          transparent 40%
+        );
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+
+      .button i {
+        margin-right: 12px;
+        color: white;
+        font-size: 1.4em;
+        width: 30px;
+        animation: iconFloat 2s ease-in-out infinite;
+      }
+
+      @keyframes gradientFlow {
+        0% { background-position: 0% 50% }
+        50% { background-position: 100% 50% }
+        100% { background-position: 0% 50% }
+      }
+
+      @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(20px) rotateX(15deg) }
+        to { opacity: 1; transform: translateY(0) rotateX(0) }
+      }
+
+      @keyframes slideDown {
+        from { opacity: 0; transform: translateY(-30px) }
+        to { opacity: 1; transform: translateY(0) }
+      }
+
+      @keyframes iconFloat {
+        0%, 100% { transform: translateY(0) }
+        50% { transform: translateY(-4px) }
+      }
+
+      @media (max-width: 768px) {
+        .grid-container {
+          grid-template-columns: 1fr;
+          padding: 1.5rem;
+          gap: 1rem;
+        }
+
+        .button {
+          font-size: 1.1rem;
+          padding: 1.2rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <h1 class="title">Game Hub</h1>
+      <p class="subtitle">Collection of Mini Projects & Games</p>
+    </header>
+
+    <main class="grid-container">
+      <button class="button" onclick="navigateTo('chess')">
+        <i class="fas fa-chess"></i>Chess
+      </button>
+      <button class="button" onclick="navigateTo('2048 game')">
+        <i class="fas fa-th-large"></i>2048 Game
+      </button>
+      <button class="button" onclick="navigateTo('tetris')">
+        <i class="fas fa-shapes"></i>Tetris
+      </button>
+      <button class="button" onclick="navigateTo('pong game')">
+        <i class="fas fa-table-tennis"></i>Pong
+      </button>
+      <button class="button" onclick="navigateTo('snake')">
+        <i class="fas fa-snake"></i>Snake
+      </button>
+      <button class="button" onclick="navigateTo('minesweeper game')">
+        <i class="fas fa-bomb"></i>Minesweeper
+      </button>
+      <button class="button" onclick="navigateTo('arkanoid')">
+        <i class="fas fa-table"></i>Arkanoid
+      </button>
+      <button class="button" onclick="navigateTo('diep.io')">
+        <i class="fas fa-crosshairs"></i>Diep.io
+      </button>
+      <button class="button" onclick="navigateTo('geometry dash')">
+        <i class="fas fa-running"></i>Geometry Dash
+      </button>
+      <button class="button" onclick="navigateTo('piano')">
+        <i class="fas fa-music"></i>Piano
+      </button>
+      <button class="button" onclick="navigateTo('minecraft')">
+        <i class="fas fa-cube"></i>Minecraft
+      </button>
+      <button class="button" onclick="navigateTo('gradient generator')">
+        <i class="fas fa-palette"></i>Gradient Generator
+      </button>
+      <button class="button" onclick="navigateTo('shadow generator')">
+        <i class="fas fa-cloud-sun"></i>Shadow Generator
+      </button>
+      <button class="button" onclick="navigateTo('blue line filter')">
+        <i class="fas fa-filter"></i>Blue Line Filter
+      </button>
+      <button class="button" onclick="navigateTo('food recipe app')">
+        <i class="fas fa-utensils"></i>Food Recipe App
+      </button>
+      <button class="button" onclick="navigateTo('retro car racing')">
+        <i class="fas fa-car"></i>Retro Car Racing
+      </button>
+      <button class="button" onclick="navigateTo('wikipedia')">
+        <i class="fas fa-book"></i>Wikipedia
+      </button>
+      <button class="button" onclick="navigateTo('battery')">
+        <i class="fas fa-battery-full"></i>Battery
+      </button>
+      <button class="button" onclick="navigateTo('donut')">
+        <i class="fas fa-circle-notch"></i>Donut
+      </button>
+    </main>
+
+    <script>
+      function navigateTo(folderName) {
+        window.location.href = `${folderName}/index.html`;
+      }
+
+      document.querySelectorAll('.button').forEach((btn, index) => {
+        btn.style.animationDelay = `${index * 0.1}s`;
+        
+        btn.addEventListener('mousemove', (e) => {
+          const rect = btn.getBoundingClientRect();
+          btn.style.setProperty('--x', `${e.clientX - rect.left}px`);
+          btn.style.setProperty('--y', `${e.clientY - rect.top}px`);
+        });
+      });
+    </script>
+  </body>
+</html>
