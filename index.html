@@ -96,8 +96,11 @@
         animation: fadeInUp 0.5s ease-out forwards;
         overflow: hidden;
         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        display: none;
+      }
+
+      .button.show {
         display: flex;
-        align-items: center;
       }
 
       .button:hover {
@@ -132,6 +135,35 @@
         font-size: 1.4em;
         width: 30px;
         animation: iconFloat 2s ease-in-out infinite;
+      }
+
+      .filter-buttons {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 2rem;
+        animation: slideDown 0.8s ease-out;
+      }
+
+      .filter-btn {
+        padding: 0.8rem 2rem;
+        border: none;
+        border-radius: 12px;
+        background: var(--glass-bg);
+        color: white;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        font-weight: 500;
+      }
+
+      .filter-btn.active {
+        background: rgba(157, 78, 221, 0.4);
+        box-shadow: 0 0 15px rgba(157, 78, 221, 0.3);
+      }
+
+      .filter-btn:hover {
+        transform: translateY(-2px);
       }
 
       @keyframes gradientFlow {
@@ -196,67 +228,66 @@
     <header class="header">
       <h1 class="title">Game Hub</h1>
       <p class="subtitle">Collection of Mini Projects & Games</p>
+      <div class="filter-buttons">
+        <button class="filter-btn active" onclick="filterItems('game')">Game Hub</button>
+        <button class="filter-btn" onclick="filterItems('project')">Project Hub</button>
+      </div>
     </header>
 
     <main class="grid-container">
-      <!--
-      <button class="button" onclick="navigateTo('chess')">
-        <i class="fas fa-chess"></i>Chess
-      </button>
-      -->
-      <button class="button" onclick="navigateTo('2048 game')">
+      <button class="button show" data-category="game" onclick="navigateTo('2048 game')">
         <i class="fas fa-th-large"></i>2048 Game
       </button>
-      <button class="button" onclick="navigateTo('tetris')">
+      <button class="button show" data-category="game" onclick="navigateTo('tetris')">
         <i class="fas fa-shapes"></i>Tetris
       </button>
-      <button class="button" onclick="navigateTo('pong game')">
+      <button class="button show" data-category="game" onclick="navigateTo('pong game')">
         <i class="fas fa-table-tennis"></i>Pong
       </button>
-
-      <button class="button" onclick="navigateTo('snake')">
+      <button class="button show" data-category="game" onclick="navigateTo('snake')">
         <i class="fas fa-dragon"></i>Snake
       </button>
-      <button class="button" onclick="navigateTo('minesweeper game')">
+      <button class="button show" data-category="game" onclick="navigateTo('minesweeper game')">
         <i class="fas fa-bomb"></i>Minesweeper
       </button>
-      <button class="button" onclick="navigateTo('arkanoid')">
+      <button class="button show" data-category="game" onclick="navigateTo('arkanoid')">
         <i class="fas fa-table"></i>Arkanoid
       </button>
-      <button class="button" onclick="navigateTo('diep.io')">
+      <button class="button show" data-category="game" onclick="navigateTo('diep.io')">
         <i class="fas fa-crosshairs"></i>Diep.io
       </button>
-      <button class="button" onclick="navigateTo('geometry dash')">
+      <button class="button show" data-category="game" onclick="navigateTo('geometry dash')">
         <i class="fas fa-running"></i>Geometry Dash
       </button>
-      <button class="button" onclick="navigateTo('piano')">
-        <i class="fas fa-music"></i>Piano
-      </button>
-      <button class="button" onclick="navigateTo('minecraft')">
-        <i class="fas fa-cube"></i>Minecraft
-      </button>
-      <button class="button" onclick="navigateTo('gradient generator')">
-        <i class="fas fa-palette"></i>Gradient Generator
-      </button>
-      <button class="button" onclick="navigateTo('shadow generator')">
-        <i class="fas fa-cloud-sun"></i>Shadow Generator
-      </button>
-      <button class="button" onclick="navigateTo('blue line filter')">
-        <i class="fas fa-filter"></i>Blue Line Filter
-      </button>
-      <button class="button" onclick="navigateTo('food recipe app')">
-        <i class="fas fa-utensils"></i>Food Recipe App
-      </button>
-      <button class="button" onclick="navigateTo('retro car racing')">
+      <button class="button show" data-category="game" onclick="navigateTo('retro car racing')">
         <i class="fas fa-car"></i>Retro Car Racing
       </button>
-      <button class="button" onclick="navigateTo('wikipedia')">
+
+      <button class="button" data-category="project" onclick="navigateTo('piano')">
+        <i class="fas fa-music"></i>Piano
+      </button>
+      <button class="button" data-category="project" onclick="navigateTo('minecraft')">
+        <i class="fas fa-cube"></i>Minecraft
+      </button>
+      <button class="button" data-category="project" onclick="navigateTo('gradient generator')">
+        <i class="fas fa-palette"></i>Gradient Generator
+      </button>
+      <button class="button" data-category="project" onclick="navigateTo('shadow generator')">
+        <i class="fas fa-cloud-sun"></i>Shadow Generator
+      </button>
+      <button class="button" data-category="project" onclick="navigateTo('blue line filter')">
+        <i class="fas fa-filter"></i>Blue Line Filter
+      </button>
+      <button class="button" data-category="project" onclick="navigateTo('food recipe app')">
+        <i class="fas fa-utensils"></i>Food Recipe App
+      </button>
+      <button class="button" data-category="project" onclick="navigateTo('wikipedia')">
         <i class="fas fa-book"></i>Wikipedia
       </button>
-      <button class="button" onclick="navigateTo('battery')">
+      <button class="button" data-category="project" onclick="navigateTo('battery')">
         <i class="fas fa-battery-full"></i>Battery
       </button>
-      <button class="button" onclick="navigateTo('donut')">
+      <button class="button" data-category="project" onclick="navigateTo('donut')">
         <i class="fas fa-circle-notch"></i>Donut
       </button>
     </main>
@@ -264,6 +295,17 @@
     <script>
       function navigateTo(folderName) {
         window.location.href = `${folderName}/index.html`;
+      }
+
+      function filterItems(category) {
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+          btn.classList.toggle('active', btn.textContent.includes(category));
+        });
+
+        document.querySelectorAll('.button').forEach(btn => {
+          const show = btn.dataset.category === category;
+          btn.classList.toggle('show', show);
+        });
       }
 
       document.querySelectorAll('.button').forEach((btn, index) => {
