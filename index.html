@@ -8,7 +8,10 @@
       rel="icon"
       href="https://cdn.glitch.global/e1f58fcd-1ad1-488f-a6db-042ccb1bb005/strona%2Fchess%2Fimg%2Fchesspieces%2Fwikipedia%2Fwr.png?v=1737126246906"
     />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
     <style>
       :root {
         --primary-color: #9d4edd;
@@ -132,24 +135,47 @@
       }
 
       @keyframes gradientFlow {
-        0% { background-position: 0% 50% }
-        50% { background-position: 100% 50% }
-        100% { background-position: 0% 50% }
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
       }
 
       @keyframes fadeInUp {
-        from { opacity: 0; transform: translateY(20px) rotateX(15deg) }
-        to { opacity: 1; transform: translateY(0) rotateX(0) }
+        from {
+          opacity: 0;
+          transform: translateY(20px) rotateX(15deg);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) rotateX(0);
+        }
       }
 
       @keyframes slideDown {
-        from { opacity: 0; transform: translateY(-30px) }
-        to { opacity: 1; transform: translateY(0) }
+        from {
+          opacity: 0;
+          transform: translateY(-30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
       }
 
       @keyframes iconFloat {
-        0%, 100% { transform: translateY(0) }
-        50% { transform: translateY(-4px) }
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-4px);
+        }
       }
 
       @media (max-width: 768px) {
@@ -173,9 +199,11 @@
     </header>
 
     <main class="grid-container">
+      <!--
       <button class="button" onclick="navigateTo('chess')">
         <i class="fas fa-chess"></i>Chess
       </button>
+      -->
       <button class="button" onclick="navigateTo('2048 game')">
         <i class="fas fa-th-large"></i>2048 Game
       </button>
@@ -185,8 +213,9 @@
       <button class="button" onclick="navigateTo('pong game')">
         <i class="fas fa-table-tennis"></i>Pong
       </button>
+
       <button class="button" onclick="navigateTo('snake')">
-        <i class="fas fa-snake"></i>Snake
+        <i class="fas fa-dragon"></i>Snake
       </button>
       <button class="button" onclick="navigateTo('minesweeper game')">
         <i class="fas fa-bomb"></i>Minesweeper
@@ -239,7 +268,7 @@
 
       document.querySelectorAll('.button').forEach((btn, index) => {
         btn.style.animationDelay = `${index * 0.1}s`;
-        
+
         btn.addEventListener('mousemove', (e) => {
           const rect = btn.getBoundingClientRect();
           btn.style.setProperty('--x', `${e.clientX - rect.left}px`);
