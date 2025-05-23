@@ -50,6 +50,7 @@
         text-align: center;
         padding: 3rem 1rem;
         animation: slideDown 0.8s ease-out;
+        position: relative;
       }
 
       .title {
@@ -134,11 +135,39 @@
         animation: iconFloat 2s ease-in-out infinite;
       }
 
-      .filter-buttons {
+      .filter-container {
+        position: relative;
+        height: 80px;
+        margin-bottom: 2rem;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+      }
+
+      .main-filter {
         display: flex;
         gap: 1rem;
-        margin-bottom: 2rem;
-        animation: slideDown 0.8s ease-out;
+        position: absolute;
+        top: 0;
+        transition: all 0.5s ease;
+      }
+
+      .main-filter.moved-down {
+        top: 100px;
+      }
+
+      .category-filters {
+        display: none;
+        gap: 1rem;
+        position: absolute;
+        top: 0;
+        justify-content: center;
+        width: 100%;
+      }
+
+      .category-filters.visible {
+        display: flex;
+        animation: fadeIn 0.3s ease-out;
       }
 
       .filter-btn {
@@ -152,6 +181,8 @@
         backdrop-filter: blur(12px);
         border: 1px solid rgba(255, 255, 255, 0.2);
         font-weight: 500;
+        min-width: 150px;
+        text-align: center;
       }
 
       .filter-btn.active {
@@ -161,10 +192,6 @@
 
       .filter-btn:hover {
         transform: translateY(-2px);
-      }
-
-      .hidden {
-        display: none !important;
       }
 
       @keyframes gradientFlow {
@@ -211,6 +238,15 @@
         }
       }
 
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
       @media (max-width: 768px) {
         .grid-container {
           grid-template-columns: 1fr;
@@ -222,6 +258,28 @@
           font-size: 1.1rem;
           padding: 1.2rem;
         }
+
+        .filter-container {
+          height: 120px;
+        }
+
+        .main-filter {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .main-filter.moved-down {
+          top: 150px;
+        }
+
+        .category-filters {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .filter-btn {
+          width: 80%;
+        }
       }
     </style>
   </head>
@@ -229,10 +287,16 @@
     <header class="header">
       <h1 class="title">Game Hub</h1>
       <p class="subtitle">Collection of Mini Projects & Games</p>
-      <div class="filter-buttons">
-        <button class="filter-btn active" data-filter="all">All</button>
-        <button class="filter-btn" data-filter="game">Game Hub</button>
-        <button class="filter-btn" data-filter="project">Project Hub</button>
+      <div class="filter-container">
+        <div class="main-filter" id="mainFilter">
+          <button class="filter-btn active" data-filter="all">Show All</button>
+          <button class="filter-btn" data-filter="categories">Categories</button>
+        </div>
+        <div class="category-filters" id="categoryFilters">
+          <button class="filter-btn" data-filter="game">Games</button>
+          <button class="filter-btn" data-filter="project">Projects</button>
+          <button class="filter-btn" data-filter="all">All</button>
+        </div>
       </div>
     </header>
 
@@ -296,6 +360,8 @@
 
     <script>
       document.addEventListener('DOMContentLoaded', function() {
+        const mainFilter = document.getElementById('mainFilter');
+        const categoryFilters = document.getElementById('categoryFilters');
         const filterButtons = document.querySelectorAll('.filter-btn');
         const items = document.querySelectorAll('.button');
         
@@ -307,32 +373,54 @@
           }, 100);
         });
 
-        filterButtons.forEach(button => {
+        // Main filter buttons
+        document.querySelector('[data-filter="all"]').addEventListener('click', function() {
+          filterItems('all');
+          resetFilters();
+        });
+
+        document.querySelector('[data-filter="categories"]').addEventListener('click', function() {
+          mainFilter.classList.add('moved-down');
+          categoryFilters.classList.add('visible');
+        });
+
+        // Category filter buttons
+        document.querySelectorAll('#categoryFilters .filter-btn').forEach(button => {
           button.addEventListener('click', function() {
             const filter = this.getAttribute('data-filter');
-            
-            // Update active button
-            filterButtons.forEach(btn => btn.classList.remove('active'));
-            this.classList.add('active');
-            
-            // Filter items
-            items.forEach(item => {
-              const category = item.getAttribute('data-category');
-              
-              if (filter === 'all' || category === filter) {
-                item.style.display = 'flex';
-                setTimeout(() => {
-                  item.style.opacity = '1';
-                }, 100);
-              } else {
-                item.style.opacity = '0';
-                setTimeout(() => {
-                  item.style.display = 'none';
-                }, 300);
-              }
-            });
+            filterItems(filter);
+            resetFilters();
           });
         });
+
+        function filterItems(filter) {
+          items.forEach(item => {
+            const category = item.getAttribute('data-category');
+            
+            if (filter === 'all' || category === filter) {
+              item.style.display = 'flex';
+              setTimeout(() => {
+                item.style.opacity = '1';
+              }, 100);
+            } else {
+              item.style.opacity = '0';
+              setTimeout(() => {
+                item.style.display = 'none';
+              }, 300);
+            }
+          });
+        }
+
+        function resetFilters() {
+          mainFilter.classList.remove('moved-down');
+          categoryFilters.classList.remove('visible');
+          
+          // Update active buttons
+          filterButtons.forEach(btn => btn.classList.remove('active'));
+          if (document.querySelector('[data-filter="all"]')) {
+            document.querySelector('[data-filter="all"]').classList.add('active');
+          }
+        }
 
         // Mouse move effect for buttons
         document.querySelectorAll('.button').forEach(btn => {
