@@ -92,15 +92,12 @@
         cursor: pointer;
         transition: all 0.3s ease;
         backdrop-filter: blur(12px);
-        opacity: 0;
-        animation: fadeInUp 0.5s ease-out forwards;
         overflow: hidden;
         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-        display: none;
-      }
-
-      .button.show {
         display: flex;
+        align-items: center;
+        opacity: 0;
+        animation: fadeInUp 0.5s ease-out forwards;
       }
 
       .button:hover {
@@ -166,6 +163,10 @@
         transform: translateY(-2px);
       }
 
+      .hidden {
+        display: none !important;
+      }
+
       @keyframes gradientFlow {
         0% {
           background-position: 0% 50%;
@@ -229,37 +230,38 @@
       <h1 class="title">Game Hub</h1>
       <p class="subtitle">Collection of Mini Projects & Games</p>
       <div class="filter-buttons">
-        <button class="filter-btn active" onclick="filterItems('game')">Game Hub</button>
-        <button class="filter-btn" onclick="filterItems('project')">Project Hub</button>
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="game">Game Hub</button>
+        <button class="filter-btn" data-filter="project">Project Hub</button>
       </div>
     </header>
 
     <main class="grid-container">
-      <button class="button show" data-category="game" onclick="navigateTo('2048 game')">
+      <button class="button" data-category="game" onclick="navigateTo('2048 game')">
         <i class="fas fa-th-large"></i>2048 Game
       </button>
-      <button class="button show" data-category="game" onclick="navigateTo('tetris')">
+      <button class="button" data-category="game" onclick="navigateTo('tetris')">
         <i class="fas fa-shapes"></i>Tetris
       </button>
-      <button class="button show" data-category="game" onclick="navigateTo('pong game')">
+      <button class="button" data-category="game" onclick="navigateTo('pong game')">
         <i class="fas fa-table-tennis"></i>Pong
       </button>
-      <button class="button show" data-category="game" onclick="navigateTo('snake')">
+      <button class="button" data-category="game" onclick="navigateTo('snake')">
         <i class="fas fa-dragon"></i>Snake
       </button>
-      <button class="button show" data-category="game" onclick="navigateTo('minesweeper game')">
+      <button class="button" data-category="game" onclick="navigateTo('minesweeper game')">
         <i class="fas fa-bomb"></i>Minesweeper
       </button>
-      <button class="button show" data-category="game" onclick="navigateTo('arkanoid')">
+      <button class="button" data-category="game" onclick="navigateTo('arkanoid')">
         <i class="fas fa-table"></i>Arkanoid
       </button>
-      <button class="button show" data-category="game" onclick="navigateTo('diep.io')">
+      <button class="button" data-category="game" onclick="navigateTo('diep.io')">
         <i class="fas fa-crosshairs"></i>Diep.io
       </button>
-      <button class="button show" data-category="game" onclick="navigateTo('geometry dash')">
+      <button class="button" data-category="game" onclick="navigateTo('geometry dash')">
         <i class="fas fa-running"></i>Geometry Dash
       </button>
-      <button class="button show" data-category="game" onclick="navigateTo('retro car racing')">
+      <button class="button" data-category="game" onclick="navigateTo('retro car racing')">
         <i class="fas fa-car"></i>Retro Car Racing
       </button>
 
@@ -293,30 +295,60 @@
     </main>
 
     <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const items = document.querySelectorAll('.button');
+        
+        // Initialize - show all items
+        items.forEach(item => {
+          item.style.display = 'flex';
+          setTimeout(() => {
+            item.style.opacity = '1';
+          }, 100);
+        });
+
+        filterButtons.forEach(button => {
+          button.addEventListener('click', function() {
+            const filter = this.getAttribute('data-filter');
+            
+            // Update active button
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+            
+            // Filter items
+            items.forEach(item => {
+              const category = item.getAttribute('data-category');
+              
+              if (filter === 'all' || category === filter) {
+                item.style.display = 'flex';
+                setTimeout(() => {
+                  item.style.opacity = '1';
+                }, 100);
+              } else {
+                item.style.opacity = '0';
+                setTimeout(() => {
+                  item.style.display = 'none';
+                }, 300);
+              }
+            });
+          });
+        });
+
+        // Mouse move effect for buttons
+        document.querySelectorAll('.button').forEach(btn => {
+          btn.style.animationDelay = `${Math.random() * 0.5}s`;
+          
+          btn.addEventListener('mousemove', (e) => {
+            const rect = btn.getBoundingClientRect();
+            btn.style.setProperty('--x', `${e.clientX - rect.left}px`);
+            btn.style.setProperty('--y', `${e.clientY - rect.top}px`);
+          });
+        });
+      });
+
       function navigateTo(folderName) {
         window.location.href = `${folderName}/index.html`;
       }
-
-      function filterItems(category) {
-        document.querySelectorAll('.filter-btn').forEach(btn => {
-          btn.classList.toggle('active', btn.textContent.includes(category));
-        });
-
-        document.querySelectorAll('.button').forEach(btn => {
-          const show = btn.dataset.category === category;
-          btn.classList.toggle('show', show);
-        });
-      }
-
-      document.querySelectorAll('.button').forEach((btn, index) => {
-        btn.style.animationDelay = `${index * 0.1}s`;
-
-        btn.addEventListener('mousemove', (e) => {
-          const rect = btn.getBoundingClientRect();
-          btn.style.setProperty('--x', `${e.clientX - rect.left}px`);
-          btn.style.setProperty('--y', `${e.clientY - rect.top}px`);
-        });
-      });
     </script>
   </body>
 </html>
